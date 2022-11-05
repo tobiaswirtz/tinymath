@@ -1,29 +1,38 @@
 import unittest
 from unittest.mock import patch
-from formula_engine import Value, Function
+from lexer import Lexer
 
-class TestValueFunction(unittest.TestCase):
+class TestLexerFunction(unittest.TestCase):
+    
+    def test_lex(self):
+        lx = Lexer()
+        tl = lx.lex("5+10(4*4.1^6-4)")
+        self.assertEqual(tl.token_list[0].value, "5")
+        self.assertEqual(tl.token_list[1].value, "+")
+        self.assertEqual(tl.token_list[2].value, "10")
+        self.assertEqual(tl.token_list[3].value, "(")
+        self.assertEqual(tl.token_list[4].value, "4")
+        self.assertEqual(tl.token_list[5].value, "*")
+        self.assertEqual(tl.token_list[6].value, "4.1")
+        self.assertEqual(tl.token_list[7].value, "^")
+        self.assertEqual(tl.token_list[8].value, "6")
+        self.assertEqual(tl.token_list[9].value, "-")
+        self.assertEqual(tl.token_list[10].value, "4")
+        self.assertEqual(tl.token_list[11].value, ")")
+        self.assertEqual(tl.token_list[0].token_type, "number")
+        self.assertEqual(tl.token_list[1].token_type, "operator")
+        self.assertEqual(tl.token_list[2].token_type, "number")
+        self.assertEqual(tl.token_list[3].token_type, "parenthesis")
+        self.assertEqual(tl.token_list[4].token_type, "number")
+        self.assertEqual(tl.token_list[5].token_type, "operator")
+        self.assertEqual(tl.token_list[6].token_type, "number")
+        self.assertEqual(tl.token_list[7].token_type, "operator")
+        self.assertEqual(tl.token_list[8].token_type, "number")
+        self.assertEqual(tl.token_list[9].token_type, "operator")
+        self.assertEqual(tl.token_list[10].token_type, "number")
+        self.assertEqual(tl.token_list[11].token_type, "parenthesis")
 
-    def test_addition(self):
-        x = Value(5)
-        y = Value(10)
-        self.assertEqual((x+y).__repr__(), 15)
 
-    def test_subtraction(self):
-        x = Value(10)
-        y = Value(4)
-        self.assertEqual((x-y).__repr__(), 6)
-
-
-class TestFunctionFunction(unittest.TestCase):
-
-    @patch('builtins.input', return_value='5+10-3')
-    def test_evaluation(self, input):
-        entered = input()
-        print(entered)
-        func = Function(entered)
-        func.evaluate()
-        self.assertEqual(1, 1)
 
 if __name__ == '__main__':
     unittest.main()
