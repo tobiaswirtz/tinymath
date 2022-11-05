@@ -6,6 +6,8 @@ class Lexer():
 
     def build_tokens(self, token_candidate_type, token_candidate, tokens):
         if token_candidate != "":
+            if token_candidate_type == "number":
+                token_candidate = float(token_candidate)
             new_token = Token(token_candidate_type, token_candidate)
             tokens.append(new_token)
         return tokens
@@ -30,6 +32,9 @@ class Lexer():
                 current_type = ""
                 current_token = ""
             else: pass
+
+        if current_token != "":
+            tokens = self.build_tokens(current_type, current_token, tokens)
 
         return TokenList(tokens)
 
